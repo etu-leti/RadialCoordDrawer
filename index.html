@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <title>Функции на полярных координатах</title>
+    <meta charset="UTF-8"/>
+  </head>
+  <body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <select id="funcs">
+      <option value="a">r = a</option>
+      <option value="a * fi">r = aφ</option>
+      <option value="a * Math.cos(fi)">r = a * cosφ</option>
+      <option value="a / fi">r = a/φ</option>
+    </select>
+    <label for="deltaSlider">Дельта</label>
+    <input id="deltaSlider" type="range" step="0.001" min="0" max="360" value="10"/>
+    <label for="iterSlider">Кол-во итераций</label>
+    <input id="iterSlider" type="range" step="1" min="0" max="10000" value="300"/>
+    <script src="main.js"></script>
+    <script>
+      var deltaRange = document.getElementById('deltaSlider');
+      var iterRange = document.getElementById('iterSlider');
+      var funcs = document.getElementById("funcs");
+
+      var func = funcs.options[funcs.selectedIndex].value;
+
+      var drawer = new Drawer();
+      drawer.draw(func, {a: 300}, {delta: +deltaRange.value, iterations: +iterRange.value});
+
+      deltaRange.addEventListener('change', redraw);
+      deltaRange.addEventListener('input', redraw);
+
+      iterRange.addEventListener('change', redraw);
+      iterRange.addEventListener('input', redraw);
+
+      funcs.addEventListener('change', redraw);
+
+      function redraw() {
+        var delta = +deltaRange.value;
+        func = funcs.options[funcs.selectedIndex].value;
+
+        drawer.clear();
+        drawer.draw(func, {a: 300}, {delta: delta, iterations: +iterRange.value});
+      }
+    </script>
+  </body>
+</html>
